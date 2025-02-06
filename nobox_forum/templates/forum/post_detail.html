@@ -1,0 +1,37 @@
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p>Автор: {{ post.user.username }}</p>
+    <p>Лайки: {{ post.likes.count }}</p>
+
+    <a href="{% url 'toggle-like' post_id=post.id %}">
+        {% if request.user in post.likes.all %}
+            Убрать лайк
+        {% else %}
+            Поставить лайк
+        {% endif %}
+    </a>
+
+    <h2>Комментарии</h2>
+    {% for comment in post.comments.all %}
+        <div>
+            <p>{{ comment.content }}</p>
+            <p>Автор: {{ comment.user.username }}</p>
+            <p>Лайки: {{ comment.likes.count }}</p>
+            <a href="{% url 'toggle-like-comment' comment_id=comment.id %}">
+                {% if request.user in comment.likes.all %}
+                    Убрать лайк
+                {% else %}
+                    Поставить лайк
+                {% endif %}
+            </a>
+        </div>
+    {% endfor %}
+
+    <form method="POST" action="{% url 'add-comment' post.id %}">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Напишите комментарий"></textarea>
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock %}

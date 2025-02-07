@@ -13,6 +13,14 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     return render(request, 'forum/post_detail.html', {'post': post})
 
+def login(request):
+    #
+    return render(request, 'forum/login.html')
+
+def signup(request):
+    #
+    return render(request, 'forum/signup.html')
+
 @login_required
 def add_comment(request, post_id):
     if request.method == 'POST':
@@ -33,9 +41,9 @@ def toggle_like(request, post_id=None, comment_id=None):
         like, created = Like.objects.get_or_create(user=request.user, comment=comment)
         if not created:
             like.delete()
-    return redirect('post-detail', post_id=post_id)
+    return redirect('post_detail', post_id=post_id)
 
-
+@login_required
 def toggle_like_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     user = request.user
@@ -51,3 +59,6 @@ def toggle_like_comment(request, comment_id):
 
 
     return redirect('post_detail', post_id=comment.post.id)
+
+
+

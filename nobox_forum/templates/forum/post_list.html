@@ -4,7 +4,9 @@
     {% for post in posts %}
         <div>
             <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
+            <img src="{{ post.content }}" alt="post_img" />
             <p>{{ post.content }}</p>
+            <br>
             <p>Автор: {{ post.user.username }}</p>
             <p>Лайки: {{ post.likes.count }}</p>
         </div>
